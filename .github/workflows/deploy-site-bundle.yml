@@ -1,0 +1,40 @@
+name: Deploy bundled operator verification site
+
+on:
+  push:
+    paths:
+      - 'site_bundle.tar.xz.b64'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract complete site bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d site_bundle.tar.xz.b64 > site_bundle.tar.xz
+          mkdir -p /tmp/bbe-site
+          tar -xJf site_bundle.tar.xz -C /tmp/bbe-site
+          cp -f /tmp/bbe-site/index.html ./index.html
+          cp -f /tmp/bbe-site/BBE-LM-*.html ./
+          touch .nojekyll
+          rm -f site_bundle.tar.xz site_bundle.tar.xz.b64
+      - name: Commit deployed site
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+          else
+            git commit -m 'Deploy complete 7-operator verification site'
+            git push
+          fi
