@@ -23,9 +23,19 @@
       <p class="hint">The full personnel list is not displayed. Search for the relevant operator or scan that operator's QR code.</p>
       <div id="results" class="results"></div>
     </section>
-
     <section id="viewer" aria-live="polite"></section>
   </main>
+
+  <div id="docModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" onclick="closeDocument()"></div>
+    <div class="modal-panel">
+      <div class="modal-head">
+        <strong id="modalTitle">Document</strong>
+        <button class="close-btn" onclick="closeDocument()" aria-label="Close">×</button>
+      </div>
+      <img id="modalImage" class="modal-image" alt="Verification document">
+    </div>
+  </div>
 
   <footer class="wrap footer">
     Verification of the recorded training / competency entry only. Site permit, supervision, equipment-specific authorisation and operating controls still apply.
