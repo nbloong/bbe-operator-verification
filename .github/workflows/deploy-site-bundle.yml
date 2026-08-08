@@ -22,9 +22,7 @@ jobs:
           base64 -d site_bundle.tar.xz.b64 > site_bundle.tar.xz
           mkdir -p /tmp/bbe-site
           tar -xJf site_bundle.tar.xz -C /tmp/bbe-site
-          cp -f /tmp/bbe-site/index.html ./index.html
-          cp -f /tmp/bbe-site/BBE-LM-*.html ./
-          touch .nojekyll
+          cp -a /tmp/bbe-site/. ./
           rm -rf site_bundle.tar.xz site_bundle.tar.xz.b64 payload_parts DEPLOY_NOW
       - name: Commit deployed site
         shell: bash
