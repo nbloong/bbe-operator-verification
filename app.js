@@ -1,6 +1,6 @@
 const id=(new URLSearchParams(location.search).get('id')||'').trim().toUpperCase();
 if(/^BBE-LM-00[1-7]$/.test(id)){
-  location.replace('operators/'+id+'.html');
+  location.replace('operator.html?id='+encodeURIComponent(id));
 }else{
   const box=document.getElementById('viewer');
   const input=document.getElementById('search');
@@ -13,7 +13,7 @@ if(/^BBE-LM-00[1-7]$/.test(id)){
       if(q.length<2){results.innerHTML='';return;}
       const list=ops.filter(o=>(o.id+' '+o.name+' '+o.certificateNo).toLowerCase().includes(q)).slice(0,8);
       results.innerHTML=list.map(o=>'<button class="result" data-id="'+o.id+'"><b>'+o.name+'</b><small>'+o.id+' · '+o.certificateNo+'</small></button>').join('')||'<div class="hint">No matching record.</div>';
-      document.querySelectorAll('.result').forEach(b=>b.onclick=()=>location.href='operators/'+b.dataset.id+'.html');
+      document.querySelectorAll('.result').forEach(b=>b.onclick=()=>location.href='operator.html?id='+encodeURIComponent(b.dataset.id));
     });
   });
 }
