@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <title>BBE Operator Verification</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="eyebrow">BRYAN BOILER ENGINEERING PTE LTD</div>
+      <h1>Operator Verification</h1>
+      <p>Overhead Crane (LM) — read-only site verification</p>
+    </div>
+  </header>
+
+  <main class="wrap main">
+    <section id="searchPanel" class="search-panel">
+      <label for="search">Find an operator</label>
+      <input id="search" type="search" autocomplete="off" placeholder="Enter BBE ID, name or certificate number">
+      <p class="hint">The full personnel list is not displayed. Search for the relevant operator or scan that operator's QR code.</p>
+      <div id="results" class="results"></div>
+    </section>
+
+    <section id="viewer" aria-live="polite"></section>
+  </main>
+
+  <footer class="wrap footer">
+    Verification of the recorded training / competency entry only. Site permit, supervision, equipment-specific authorisation and operating controls still apply.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
