@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Diagnose and clean LM006 certificate in test workspace
+        run: python .github/repair_lm006.py
       - name: LM001
+        if: always()
         run: python .github/verify_one.py BBE-LM-001
       - name: LM002
         if: always()
