@@ -1,0 +1,35 @@
+name: Assemble LM006 certificate
+on:
+  push:
+    branches:
+      - lm006-cert-fix-20260812
+    paths:
+      - .github/workflows/assemble-lm006-cert.yml
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble and verify certificate
+        shell: python
+        run: |
+          import base64, hashlib, pathlib
+          root = pathlib.Path('.repair/lm006-q10')
+          text = ''.join((root / f'part-{i:02d}.txt').read_text().strip() for i in range(4))
+          raw = base64.b64decode(text, validate=True)
+          assert len(raw) == 13060, len(raw)
+          assert raw[:4] == b'RIFF' and raw[8:12] == b'WEBP'
+          assert hashlib.sha256(raw).hexdigest() == 'a0facbb11ffba1c4e2bfe88b314611396aad74a9e0ab4908a0c6c520069e33b5'
+          out = pathlib.Path('assets/docs/BBE-LM-006-cert.webp')
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_bytes(raw)
+          print('LM006 CERTIFICATE: PASS', len(raw), hashlib.sha256(raw).hexdigest())
+      - name: Commit verified certificate
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/docs/BBE-LM-006-cert.webp
+          git commit -m "Add verified LM006 certificate image"
+          git push
