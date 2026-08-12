@@ -11,29 +11,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: LM001
-        shell: python
         run: python .github/verify_one.py BBE-LM-001
       - name: LM002
         if: always()
-        shell: python
         run: python .github/verify_one.py BBE-LM-002
       - name: LM003
         if: always()
-        shell: python
         run: python .github/verify_one.py BBE-LM-003
       - name: LM004
         if: always()
-        shell: python
         run: python .github/verify_one.py BBE-LM-004
       - name: LM005
         if: always()
-        shell: python
         run: python .github/verify_one.py BBE-LM-005
       - name: LM006
         if: always()
-        shell: python
         run: python .github/verify_one.py BBE-LM-006
       - name: LM007
         if: always()
-        shell: python
         run: python .github/verify_one.py BBE-LM-007
