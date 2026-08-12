@@ -10,32 +10,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate LM001-LM007 document payloads
+      - name: LM001
         shell: python
-        run: |
-          import base64, json, pathlib, sys
-          root = pathlib.Path('assets/docs')
-          failed = []
-          for n in range(1, 8):
-              oid = f'BBE-LM-{n:03d}'
-              p = root / f'{oid}.json'
-              try:
-                  data = json.loads(p.read_text(encoding='utf-8'))
-                  card = data.get('card','')
-                  if oid == 'BBE-LM-004':
-                      cert = (root / 'BBE-LM-004-cert.txt').read_text(encoding='utf-8').strip()
-                  else:
-                      cert = data.get('cert','')
-                  for kind, txt in [('card', card), ('cert', cert)]:
-                      raw = base64.b64decode(txt, validate=True)
-                      ok = len(raw) > 20 and raw[:4] == b'RIFF' and raw[8:12] == b'WEBP'
-                      if not ok:
-                          raise ValueError(f'{kind} is not valid WEBP')
-                  print(f'{oid}: PASS')
-              except Exception as e:
-                  failed.append((oid, str(e)))
-                  print(f'{oid}: FAIL - {e}')
-          if failed:
-              print('OVERALL: FAIL')
-              sys.exit(1)
-          print('OVERALL: PASS - ALL 7 CURRENT PAYLOADS VALID')
+        run: python .github/verify_one.py BBE-LM-001
+      - name: LM002
+        if: always()
+        shell: python
+        run: python .github/verify_one.py BBE-LM-002
+      - name: LM003
+        if: always()
+        shell: python
+        run: python .github/verify_one.py BBE-LM-003
+      - name: LM004
+        if: always()
+        shell: python
+        run: python .github/verify_one.py BBE-LM-004
+      - name: LM005
+        if: always()
+        shell: python
+        run: python .github/verify_one.py BBE-LM-005
+      - name: LM006
+        if: always()
+        shell: python
+        run: python .github/verify_one.py BBE-LM-006
+      - name: LM007
+        if: always()
+        shell: python
+        run: python .github/verify_one.py BBE-LM-007
